@@ -37,14 +37,14 @@ The deployement architecture overview looks like the following diagram
 
 ## How Prometheus Works In Short
 
-at the startup of prometheus pod, the configuation file is passed to it. [The file](resrouces/prometheus/prometheus.yaml) list all the prometheus jobs that will be run in certain intervals and for example looks for any pod that has thes annotations
+at the startup of prometheus pod, the configuation file is passed to it. [The file](./resources/prometheus/prometheus.yaml) list all the prometheus jobs that will be run in certain intervals and for example looks for any pod that has thes annotations
 
 ```yaml
 prometheus.io/port: "9991" #it is metric port
 prometheus.io/scrape: "true"
 ```
 
-Look at this [example](express-app/deploy/deployment) how it is defined in the deployment yaml file.
+Look at this [example](express-app/deploy/deployment.yaml) how it is defined in the deployment yaml file.
 
 In order to see how individual application export metrics so that prometheus can scrape them, there is a sample nodejs app prepared. To install the app run this command
 
