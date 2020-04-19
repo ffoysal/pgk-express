@@ -106,3 +106,10 @@ http_request_duration_seconds_count{status_code="200",method="GET",path="/api/sl
 # TYPE up gauge
 up 1
 ```
+
+### Referenc Sites
+
+- https://linuxacademy.com/blog/kubernetes/running-prometheus-on-kubernetes/
+- https://kubernetes.github.io/ingress-nginx/user-guide/monitoring/
+- https://medium.com/teamzerolabs/node-js-monitoring-with-prometheus-grafana-3056362ccb80
+- https://www.npmjs.com/package/api-express-exporter
