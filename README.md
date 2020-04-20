@@ -31,7 +31,7 @@ To access the prometheus expression browser need to do port forward as both graf
 
 password for grafana is `admin`
 
-To add prometheous data source in grafana ( [http://localhost:3000](http://localhost:3000) ) set the url to `http://prometheus:9090` like this picture. Then clik on "Save
+To add prometheous data source in grafana ( [http://localhost:3000](http://localhost:3000) ) set the url to `http://prometheus:9090` like this picture. Then clik on "Save & Test" then prometheus dashboard can be imported from "Dashboards" tab.
 
 ![alt text](add-data-source.png)
 
