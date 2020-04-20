@@ -25,11 +25,15 @@ Prometheus needs to create clusterrole to scrape metrices from different namespa
 
 To access the prometheus expression browser need to do port forward as both grafana and prometheus services are type ClusterIP
 
-`kubectl port-forward svc/prometheus 8080:8080 -n monitoring`
+`kubectl port-forward svc/prometheus 9090:9090 -n monitoring`
 
 `kubectl port-forward svc/grafana 3000:3000 -n monitoring`
 
 password for grafana is `admin`
+
+To add prometheous data source in grafana ( [http://localhost:3000](http://localhost:3000) ) set the url to `http://prometheus:9090` like this picture. Then clik on "Save
+
+![alt text](add-data-source.png)
 
 The deployement architecture overview looks like the following diagram
 
@@ -74,7 +78,13 @@ curl http://localhost:4000/api/fast
 curl http://localhost:4000/api/error
 ```
 
-then go to the expression browser `http://localhost:8080/` make some query
+To generate metrics in the express app run the provided script
+
+```sh
+./generate-logs.sh
+```
+
+then go to the expression browser `http://localhost:9090/` make some query
 
 ![alt text](metric-example.png)
 
@@ -106,6 +116,7 @@ http_request_duration_seconds_count{status_code="200",method="GET",path="/api/sl
 # TYPE up gauge
 up 1
 ```
+
 
 ### Referenc Sites
 
