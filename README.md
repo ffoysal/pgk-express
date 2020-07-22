@@ -168,6 +168,57 @@ spec:
     forceSlash: true
 ```
 
+## Run Prometheus behind proxy
+
+Add these lines in the prometheus deployment
+
+```yaml
+args:
+  - "--web.external-url=http://localhost:9090/prometheus"
+  - "--web.route-prefix=/"
+```
+
+For nginx ingress controller use this annotation
+
+```yaml
+ingress:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+```
+
+For traefik IngressRoute
+
+```yaml
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: prometheus
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`example.com`) && PathPrefix(`/prometheus`)
+      kind: Rule
+      services:
+      - name: prometheus
+        port: 9090
+      middlewares:
+      - name: prometheus-replacepathregex
+  tls:
+    options: {}
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: prometheus-replacepathregex
+spec:
+  stripPrefix:
+    prefixes:
+      - /prometheus
+    forceSlash: true
+```
+
+
 ### Referenc Sites
 
 - https://linuxacademy.com/blog/kubernetes/running-prometheus-on-kubernetes/
@@ -175,3 +226,4 @@ spec:
 - https://medium.com/teamzerolabs/node-js-monitoring-with-prometheus-grafana-3056362ccb80
 - https://www.npmjs.com/package/api-express-exporter
 - https://github.com/helm/charts/issues/11436
+- https://prometheus.io/docs/guides/basic-auth/#prometheus-configuration
