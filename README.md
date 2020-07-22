@@ -117,6 +117,56 @@ http_request_duration_seconds_count{status_code="200",method="GET",path="/api/sl
 up 1
 ```
 
+## Run Grafana Behind Proxy
+
+Add this to the grafana deployment
+
+```yaml
+ env:
+ - name: GF_SERVER_ROOT_URL
+   value: "%(protocol)s://%(domain)s/grafana/?(.*)"
+```
+
+For nginx ingress controller use this annotation
+
+```yaml
+ingress:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+```
+
+For traefik IngressRoute
+
+```yaml
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: grafana
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`example.com`) && PathPrefix(`/grafana`)
+      kind: Rule
+      services:
+      - name: grafana
+        port: 3000
+      middlewares:
+      - name: grafana-replacepathregex
+  tls:
+    options: {}
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: grafana-replacepathregex
+spec:
+  stripPrefix:
+    prefixes:
+      - /grafana
+    forceSlash: true
+```
 
 ### Referenc Sites
 
@@ -124,3 +174,4 @@ up 1
 - https://kubernetes.github.io/ingress-nginx/user-guide/monitoring/
 - https://medium.com/teamzerolabs/node-js-monitoring-with-prometheus-grafana-3056362ccb80
 - https://www.npmjs.com/package/api-express-exporter
+- https://github.com/helm/charts/issues/11436
